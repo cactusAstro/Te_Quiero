@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The_Alexby10</title>
+
+  <style>
+    :root{
+      --bg1:#ffb3d9;
+      --bg2:#ff6fb1;
+      --bg3:#ffd6f0;
+      --card:#ffffffcc;
+      --shadow: 0 18px 60px rgba(0,0,0,.18);
+      --glow: 0 0 25px rgba(255, 62, 166, .55);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:#2a0830;
+      min-height:100vh;
+      overflow-x:hidden;
+      background:
+        radial-gradient(900px 600px at 10% 10%, var(--bg3), transparent 60%),
+        radial-gradient(900px 600px at 90% 20%, #ffe1f5, transparent 55%),
+        radial-gradient(900px 600px at 70% 90%, #ffd2ea, transparent 55%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+    }
+
+    .sparkles{
+      pointer-events:none;
+      position:fixed;
+      inset:0;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.9) 50%, transparent 51%),
+        radial-gradient(2px 2px at 120px 80px, rgba(255,255,255,.7) 50%, transparent 51%),
+        radial-gradient(2px 2px at 260px 140px, rgba(255,255,255,.8) 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 320px 30px, rgba(255,255,255,.8) 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 420px 120px, rgba(255,255,255,.75) 50%, transparent 51%);
+      background-size: 520px 220px;
+      mix-blend-mode: screen;
+      opacity:.35;
+      filter: blur(.2px);
+      animation: twinkle 6s ease-in-out infinite alternate;
+      z-index:1;
+    }
+    @keyframes twinkle{
+      from{ opacity:.22; transform:translateY(0); }
+      to{ opacity:.42; transform:translateY(-6px); }
+    }
+
+    header, main, footer{ position:relative; z-index:3; }
+
+    header{
+      padding: 40px 18px 18px;
+      text-align:center;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      background: rgba(255,255,255,.55);
+      border:2px solid rgba(255,255,255,.9);
+      box-shadow: var(--glow);
+      backdrop-filter: blur(8px);
+    }
+    .logo{
+      width:34px;height:34px;
+      border-radius:12px;
+      background: radial-gradient(circle at 30% 30%, #fff, #ffb8e2 40%, #ff2aa3 80%);
+      box-shadow: 0 10px 25px rgba(255,42,163,.35);
+      border:2px solid rgba(255,255,255,.9);
+    }
+    h1{
+      margin:14px 0 6px;
+      font-size: clamp(28px, 4.2vw, 54px);
+      text-shadow: 0 10px 25px rgba(0,0,0,.16);
+    }
+    .subtitle{
+      margin:0 auto;
+      max-width: 900px;
+      font-size: clamp(14px, 2vw, 18px);
+      opacity:.9;
+      line-height:1.5;
+    }
+    .hearts{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      margin-top: 10px;
+      font-size: 20px;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.12));
+    }
+
+    .wrap{
+      width:min(1100px, 92vw);
+      margin: 0 auto 44px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .card{
+      grid-column: span 12;
+      border-radius: 22px;
+      background: var(--card);
+      border: 2px solid rgba(255,255,255,.95);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      overflow:hidden;
+      position:relative;
+    }
+    @media (min-width: 820px){
+      .card{ grid-column: span 4; }
+    }
+
+    .card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: linear-gradient(135deg, rgba(255,42,163,.9), rgba(255,255,255,.4), rgba(255,42,163,.75));
+      filter: blur(18px);
+      opacity:.25;
+      z-index:0;
+    }
+
+    /* FOTO de la carta */
+    .card-img{
+      width:100%;
+      height: 170px;
+      object-fit: cover;
+      display:block;
+      filter: saturate(1.15) contrast(1.02);
+    }
+
+    .card-inner{
+      position:relative;
+      z-index:1;
+      padding: 16px 16px 16px;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.9);
+      border: 2px solid rgba(255,62,166,.25);
+      font-weight:900;
+      letter-spacing:.3px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.08);
+    }
+
+    .title{
+      margin: 12px 0 6px;
+      font-size: 22px;
+      font-weight: 950;
+      letter-spacing:.3px;
+    }
+
+    .desc{
+      margin: 0 0 14px;
+      opacity:.9;
+      line-height:1.45;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom: 14px;
+    }
+    .chip{
+      font-size: 12px;
+      font-weight: 800;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255, 221, 241, .85);
+      border: 1.8px solid rgba(255, 62, 166, .25);
+    }
+
+    .cta{
+      width:100%;
+      display:flex;
+      gap:10px;
+    }
+    .cta a{
+      flex:1;
+      text-decoration:none;
+      text-align:center;
+      padding: 11px 12px;
+      border-radius: 14px;
+      font-weight: 900;
+      border: 2px solid rgba(255,62,166,.22);
+      box-shadow: 0 12px 26px rgba(0,0,0,.10);
+      background: rgba(255,255,255,.86);
+      color:#a70066;
+      transition: transform .15s ease, filter .15s ease;
+    }
+    .cta a.primary{
+      background: linear-gradient(135deg, #ff2aa3, #ff84c8);
+      color:white;
+      border-color: rgba(255,255,255,.55);
+      box-shadow: 0 14px 35px rgba(255,42,163,.30);
+    }
+    .cta a:hover{ transform: translateY(-1px); filter: brightness(1.03); }
+
+    footer{
+      text-align:center;
+      padding: 20px 16px 42px;
+      opacity:.85;
+      position:relative;
+      z-index:3;
+    }
+
+    /* ====== ICONO PERSONAL FLOTANTE (FIJO) ====== */
+    #floaters-layer{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:2;
+      overflow:hidden;
+    }
+
+    .floater{
+      position:absolute;
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      object-fit: cover;
+      box-shadow: 0 16px 35px rgba(0,0,0,.18);
+      border: 2px solid rgba(255,255,255,.9);
+      filter: saturate(1.15);
+      opacity:.95;
+
+      animation-name: floatUp, sway;
+      animation-timing-function: linear, ease-in-out;
+      animation-iteration-count: infinite, infinite;
+      will-change: transform, left, top;
+    }
+
+    @keyframes floatUp{
+      from{ transform: translateY(110vh) rotate(0deg); }
+      to{ transform: translateY(-160px) rotate(360deg); }
+    }
+    @keyframes sway{
+      0%,100%{ margin-left: 0px; }
+      50%{ margin-left: 28px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sparkles"></div>
+  <div id="floaters-layer" aria-hidden="true"></div>
+
+  <header>
+    <div class="pill">
+      <div class="logo" aria-hidden="true"></div>
+      <strong>The_Alexby10</strong>
+      <span style="opacity:.8">—</span>
+      <span style="opacity:.9">Pink Gamer Mode ✨</span>
+    </div>
+
+    <h1>The_Alexby10 el roba cobre</h1>
+    <p class="subtitle">
+        
+      <strong>PATATUDO</strong>.
+    </p>
+    <div class="hearts">🍌🍌🍌</div>
+  </header>
+
+  <main class="wrap">
+    <section class="grid">
+
+      <!-- FORTNITE -->
+      <article class="card">
+        <!-- CAMBIA ESTA FOTO -->
+        <img class="card-img" src="./IMG_8818.jpeg" alt="Fortnite">
+        <div class="card-inner">
+          <div class="tag">💅✨ Carta #1</div>
+          <div class="title">Alexby intelectual</div>
+          <p class="desc">Alexby viendo videos de porno gay.</p>
+          <div class="chips">
+            <span class="chip">Battle Royale</span>
+            <span class="chip">Clips</span>
+            <span class="chip">Directos</span>
+          </div>
+          <div class="cta">
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Último vídeo</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- ROCKET LEAGUE -->
+      <article class="card">
+        <!-- CAMBIA ESTA FOTO -->
+        <img class="card-img" src="./IMG_8819.jpeg" alt="Rocket League">
+        <div class="card-inner">
+          <div class="tag">💖🚗 Carta #2</div>
+          <div class="title">Alexby pensativo</div>
+          <p class="desc">No sabe si meterse un pitote por la boca o por el siempre sucio.</p>
+          <div class="chips">
+            <span class="chip">Pollato</span>
+            <span class="chip">Semen</span>
+            <span class="chip">Gemido asegurado</span>
+          </div>
+          <div class="cta">
+            <a href="https://es.pornhub.com">Último clip</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- GTA VI -->
+      <article class="card">
+        <!-- CAMBIA ESTA FOTO -->
+        <img class="card-img" src="./IMG_8823.jpeg" alt="GTA VI">
+        <div class="card-inner">
+          <div class="tag">💘🌴 Carta #3</div>
+          <div class="title">Alexby felis</div>
+          <p class="desc">Al final hizo las dos. le duele el callejon maloliente y la boca.</p>
+          <div class="chips">
+            <span class="chip">Teorías</span>
+            <span class="chip">Sangre</span>
+            <span class="chip">Lana Rhoades</span>
+          </div>
+          <div class="cta">
+            <a href="https://www.youtube.com/@AlexisRaul011">Alesby y sus chupiaventuras (No sale de casa)</a>
+          </div>
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+  <footer>
+     <strong>CANAL DE ALESIS</strong> — <a href="https://preview.redd.it/do-you-think-mia-khalifa-could-have-make-it-in-modelling-v0-1ksk9vq4mjvd1.jpg?width=640&crop=smart&auto=webp&s=21441038263bc6a68c61f50bfa80fc4136cd7c38">AQUI</a>.
+  </footer>
+
+  <script>
+    /* =========================================================
+       ICONO PERSONAL FLOTANTE (SOLO TU LO CAMBIAS AQUÍ)
+       1) Mete tu imagen en: img/icono.png
+       2) Si se llama distinto, cambia la ruta en ICON_SRC
+    ========================================================= */
+    const ICON_SRC = "Ajia.png";
+
+    /* Cuántos iconos a la vez por la pantalla */
+    const ICON_COUNT = 14;
+
+    /* Cada cuánto spawnea uno nuevo (ms) */
+    const SPAWN_EVERY_MS = 650;
+
+    const layer = document.getElementById("floaters-layer");
+
+    // Crea iconos continuamente, siempre con TU imagen
+    setInterval(() => {
+      if (layer.childElementCount > ICON_COUNT) return;
+      spawnFloater();
+    }, SPAWN_EVERY_MS);
+
+    // Spawnea algunos al inicio para que ya se vea vivo
+    for (let i = 0; i < 10; i++) setTimeout(spawnFloater, i * 180);
+
+    function spawnFloater(){
+      const img = document.createElement("img");
+      img.src = ICON_SRC;
+      img.className = "floater";
+
+      // Posición horizontal aleatoria
+      img.style.left = (Math.random() * 100) + "vw";
+
+      // Tamaño aleatorio
+      const size = 40 + Math.random() * 55; // 40..95
+      img.style.width = size + "px";
+      img.style.height = size + "px";
+      img.style.borderRadius = (12 + Math.random()*18) + "px";
+
+      // Duración
+      const upDuration = 10 + Math.random() * 14; // 10..24s
+      const swayDuration = 2.8 + Math.random() * 3.8; // 2.8..6.6s
+      img.style.animationDuration = `${upDuration}s, ${swayDuration}s`;
+
+      // Retrasos para que no vayan clonados
+      img.style.animationDelay = `${Math.random()*1.6}s, ${Math.random()*1.2}s`;
+
+      // Cuando complete un ciclo, lo borramos para no llenar la página
+      img.addEventListener("animationiteration", () => {
+        img.remove();
+      });
+
+      layer.appendChild(img);
+    }
+  </script>
+</body>
+</html>
