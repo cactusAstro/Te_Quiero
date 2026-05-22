@@ -28,31 +28,29 @@
   .tq {
     position: absolute;
     font-family: 'Poppins', sans-serif;
-    color: #ff3b6b;
-    font-size: 24px;
+    color: #fff;
+    font-size: 32px;
     font-weight: 700;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     white-space: nowrap;
     text-shadow:
-      0 0 6px #ff1744,
-      0 0 14px #ff4d6d,
-      0 0 22px rgba(255, 0, 234, 0.6);
+      0 0 12px #ff1744,
+      0 0 28px #ff1744;
     opacity: 0;
     transform: translate(-50%, -50%);
     pointer-events: none;
     animation: fade 5s infinite ease-in-out;
   }
 
-  /* Los emojis sin sombra para que se vean limpios */
   .tq .emoji {
     text-shadow: none;
-    font-size: 22px;
-    margin: 0 4px;
+    font-size: 28px;
+    margin: 0 8px;
     vertical-align: middle;
   }
 
   @keyframes fade {
-    0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
+    0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
     50%      { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   }
 </style>
@@ -67,7 +65,8 @@ const H = window.innerHeight;
 const CX = W / 2;
 const CY = H / 2;
 
-const SCALE = Math.min(W, H) / 38;
+// ⭐ Corazón GRANDE — ocupa casi toda la pantalla
+const SCALE = Math.min(W, H) / 22;
 
 function heartPoint(t) {
   return {
@@ -90,10 +89,10 @@ for (let i = 1; i < pts.length; i++) {
 }
 const total = cum[cum.length - 1];
 
-const N = 34;
+// 16 frases — bien repartidas en un corazón grande
+const N = 16;
 const CYCLE = 5;
 
-// 🤍 al inicio, ❤️ al final
 const TEXT = '<span class="emoji">🤍</span>TE QUIERO<span class="emoji">❤️</span>';
 
 for (let i = 0; i < N; i++) {
