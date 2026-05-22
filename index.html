@@ -6,7 +6,7 @@
 <title>Te quiero</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -17,7 +17,6 @@
     align-items: center;
     height: 100vh;
     overflow: hidden;
-
   }
 
   #stage {
@@ -28,8 +27,11 @@
 
   .tq {
     position: absolute;
+    font-family: 'Poppins', sans-serif;
     color: #ff3b6b;
-    font-size: 28px;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 1px;
     white-space: nowrap;
     text-shadow:
       0 0 6px #ff1744,
@@ -41,8 +43,13 @@
     animation: fade 5s infinite ease-in-out;
   }
 
-  .heart-red   { color: #ff1744; text-shadow: 0 0 6px #ff1744; }
-  .heart-white { color: #ff07e6; text-shadow: 0 0 6px #ff07e6; }
+  /* Los emojis sin sombra para que se vean limpios */
+  .tq .emoji {
+    text-shadow: none;
+    font-size: 22px;
+    margin: 0 4px;
+    vertical-align: middle;
+  }
 
   @keyframes fade {
     0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
@@ -60,14 +67,8 @@ const H = window.innerHeight;
 const CX = W / 2;
 const CY = H / 2;
 
-// Heart big enough but with margin
 const SCALE = Math.min(W, H) / 38;
 
-// Parametric heart — t goes clockwise on screen:
-//   t=0     → top dip (centro arriba)
-//   t=π/2   → derecha
-//   t=π     → punta abajo
-//   t=3π/2  → izquierda
 function heartPoint(t) {
   return {
     x: 16 * Math.pow(Math.sin(t), 3),
@@ -75,7 +76,6 @@ function heartPoint(t) {
   };
 }
 
-// Sample muchos puntos y calcular longitud de arco para repartir uniforme
 const SAMPLES = 4000;
 const pts = [];
 for (let i = 0; i < SAMPLES; i++) {
@@ -90,15 +90,14 @@ for (let i = 1; i < pts.length; i++) {
 }
 const total = cum[cum.length - 1];
 
-// N "te quiero" repartidos por el contorno
 const N = 34;
-const CYCLE = 5; // segundos, igual que la animación
+const CYCLE = 5;
 
-const TEXT = 'te quiero <span class="heart-red">&#10084;</span><span class="heart-white">&#9825;</span>';
+// 🤍 al inicio, ❤️ al final
+const TEXT = '<span class="emoji">🤍</span>TE QUIERO<span class="emoji">❤️</span>';
 
 for (let i = 0; i < N; i++) {
   const targetLen = (i / N) * total;
-  // Encontrar el sample con esa longitud
   let lo = 0, hi = cum.length - 1;
   while (lo < hi) {
     const mid = (lo + hi) >> 1;
@@ -113,8 +112,6 @@ for (let i = 0; i < N; i++) {
   el.style.left = (CX + p.x * SCALE) + 'px';
   el.style.top  = (CY + p.y * SCALE) + 'px';
 
-  // Onda en sentido horario: phase aumenta con i.
-  // delay = (phase - 1) * CYCLE → phase creciente peakea más tarde
   const phase = i / N;
   const delay = (phase - 1) * CYCLE;
   el.style.animationDelay = delay.toFixed(3) + 's';
