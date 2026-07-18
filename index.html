@@ -1,233 +1,244 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>❤️</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤍</title>
+    <meta name="description" content="Un contador especial desde aquel día.">
+    <meta property="og:title" content="Para ti 🤍">
+    <meta property="og:description" content="Un contador especial desde aquel día.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Great+Vibes&display=swap"
+        rel="stylesheet">
 
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  body {
-    background: #000;
-    overflow: hidden;
-    height: 100vh;
-    width: 100vw;
-    position: relative;
-  }
+        body {
+            background: #000;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
 
-  canvas {
-    display: block;
-    position: absolute;
-    inset: 0;
-  }
+        canvas {
+            display: block;
+            position: absolute;
+            inset: 0;
+        }
 
-  .nombre-centro {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: rgba(255, 255, 255, 0.96);
-    font-family: 'Poppins', sans-serif;
-    font-size: 54px;
-    font-weight: 600;
-    z-index: 10;
-    letter-spacing: 10px;
-    pointer-events: none;
-    user-select: none;
-    text-shadow:
-      0 0 10px rgba(255, 60, 60, 0.35),
-      0 0 28px rgba(255, 0, 0, 0.22);
-  }
+        .nombre-centro {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255, 255, 255, 0.96);
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(28px, 8vw, 54px);
+            font-weight: 600;
+            z-index: 10;
+            letter-spacing: clamp(4px, 1.6vw, 10px);
+            max-width: 92vw;
+            text-align: center;
+            pointer-events: none;
+            user-select: none;
+            text-shadow:
+                0 0 10px rgba(255, 255, 255, 0.35),
+                0 0 28px rgba(255, 255, 255, 0.22);
+        }
 
-  .firma {
-    position: fixed;
-    bottom: 36px;
-    right: 42px;
-    color: rgba(255, 220, 220, 0.82);
-    font-family: 'Great Vibes', cursive;
-    font-size: 40px;
-    z-index: 10;
-    pointer-events: none;
-    user-select: none;
-    text-shadow:
-      0 0 10px rgba(255, 50, 50, 0.42),
-      0 0 24px rgba(255, 0, 0, 0.22);
-    animation: pulseSign 4s infinite ease-in-out;
-  }
+        .firma {
+            position: fixed;
+            bottom: 36px;
+            right: 42px;
+            color: rgba(255, 255, 255, 0.82);
+            font-family: 'Great Vibes', cursive;
+            font-size: 40px;
+            z-index: 10;
+            pointer-events: none;
+            user-select: none;
+            text-shadow:
+                0 0 10px rgba(255, 255, 255, 0.42),
+                0 0 24px rgba(255, 255, 255, 0.22);
+            animation: pulseSign 4s infinite ease-in-out;
+        }
 
-  .firma::after {
-    content: ' ♡';
-    color: rgba(255, 80, 80, 0.82);
-  }
+        .firma::after {
+            content: ' ♡';
+            color: white;
+            text-shadow:
+                0 0 10px rgba(255, 255, 255, 0.42),
+                0 0 24px rgba(255, 255, 255, 0.22);
+            animation: pulseSign 4s infinite ease-in-out
+        }
 
-  .contador {
-    position: fixed;
-    top: 28px;
-    left: 34px;
-    z-index: 10;
-    pointer-events: none;
-    user-select: none;
-    font-family: 'Poppins', sans-serif;
-    color: rgba(255, 255, 255, 0.76);
-    text-shadow:
-      0 0 10px rgba(255, 0, 0, 0.25),
-      0 0 22px rgba(255, 0, 0, 0.12);
-  }
+        .contador {
+            position: fixed;
+            top: 28px;
+            left: 34px;
+            z-index: 10;
+            pointer-events: none;
+            user-select: none;
+            font-family: 'Poppins', sans-serif;
+            color: rgba(255, 255, 255, 0.76);
+            text-shadow:
+                0 0 10px rgba(255, 255, 255, 0.25),
+                0 0 22px rgba(255, 255, 255, 0.12);
+        }
 
-  .contador-titulo {
-    font-size: 10px;
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.28);
-    margin-bottom: 10px;
-  }
+        .contador-titulo {
+            font-size: 10px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.28);
+            margin-bottom: 10px;
+        }
 
-  .contador-tiempo {
-    font-size: 12px;
-    letter-spacing: 1.4px;
-    line-height: 1.8;
-    max-width: 520px;
-  }
+        .contador-tiempo {
+            font-size: 12px;
+            letter-spacing: 1.4px;
+            line-height: 1.8;
+            max-width: 520px;
+        }
 
-  .contador-tiempo span {
-    color: rgba(255, 85, 85, 0.95);
-    font-weight: 600;
-  }
+        .contador-tiempo span {
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 600;
+        }
 
-  @keyframes pulseSign {
-    0%, 100% {
-      opacity: 0.75;
-      transform: scale(1);
-    }
+        @keyframes pulseSign {
 
-    50% {
-      opacity: 1;
-      transform: scale(1.025);
-    }
-  }
+            0%,
+            100% {
+                opacity: 0.75;
+                transform: scale(1);
+            }
 
-  @media (max-width: 700px) {
-    .nombre-centro {
-      font-size: 36px;
-      letter-spacing: 6px;
-    }
+            50% {
+                opacity: 1;
+                transform: scale(1.025);
+            }
+        }
 
-    .firma {
-      font-size: 30px;
-      bottom: 24px;
-      right: 26px;
-    }
+        @media (max-width: 700px) {
+            .firma {
+                font-size: 30px;
+                bottom: 24px;
+                right: 26px;
+            }
 
-    .contador {
-      top: 20px;
-      left: 22px;
-      right: 22px;
-    }
+            .contador {
+                top: 20px;
+                left: 22px;
+                right: 22px;
+            }
 
-    .contador-titulo {
-      font-size: 9px;
-      letter-spacing: 5px;
-    }
+            .contador-titulo {
+                font-size: 9px;
+                letter-spacing: 5px;
+            }
 
-    .contador-tiempo {
-      font-size: 10px;
-      max-width: 330px;
-      line-height: 1.7;
-    }
-  }
-</style>
+            .contador-tiempo {
+                font-size: 10px;
+                max-width: 330px;
+                line-height: 1.7;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<canvas id="canvas"></canvas>
+    <canvas id="canvas"></canvas>
 
-<div class="contador">
-  <div class="contador-titulo">DESDE AQUEL DÍA</div>
-  <div class="contador-tiempo" id="contadorTiempo"></div>
-</div>
+    <div class="contador">
+        <div class="contador-titulo">DESDE AQUEL DÍA</div>
+        <div class="contador-tiempo" id="contadorTiempo"></div>
+    </div>
 
-<div class="nombre-centro">xxxxxxxx</div>
-<div class="firma">Eres mi vida</div>
+    <!-- Aquí se ha añadido el nombre -->
+    <div class="nombre-centro">xxxxxxxxxxx</div>
+    <div class="firma">Eres mi vida</div>
 
-<script>
-/*Cambio de fecha aquí:*/
-const FECHA_INICIO = new Date('2025-11-10T14:32:00');
+    <script>
+        /* Aquí se ha cambiado la fecha (Año-Mes-Día y Hora:Minuto:Segundo) */
+        const FECHA_INICIO = new Date('2025-01-20T16:00:00');
 
-const contadorTiempo = document.getElementById('contadorTiempo');
+        const contadorTiempo = document.getElementById('contadorTiempo');
 
-function calcularDiferenciaCompleta(inicio, fin) {
-  let años = fin.getFullYear() - inicio.getFullYear();
-  let meses = fin.getMonth() - inicio.getMonth();
-  let dias = fin.getDate() - inicio.getDate();
-  let horas = fin.getHours() - inicio.getHours();
-  let minutos = fin.getMinutes() - inicio.getMinutes();
-  let segundos = fin.getSeconds() - inicio.getSeconds();
+        function calcularDiferenciaCompleta(inicio, fin) {
+            let años = fin.getFullYear() - inicio.getFullYear();
+            let meses = fin.getMonth() - inicio.getMonth();
+            let dias = fin.getDate() - inicio.getDate();
+            let horas = fin.getHours() - inicio.getHours();
+            let minutos = fin.getMinutes() - inicio.getMinutes();
+            let segundos = fin.getSeconds() - inicio.getSeconds();
 
-  if (segundos < 0) {
-    segundos += 60;
-    minutos--;
-  }
+            if (segundos < 0) {
+                segundos += 60;
+                minutos--;
+            }
 
-  if (minutos < 0) {
-    minutos += 60;
-    horas--;
-  }
+            if (minutos < 0) {
+                minutos += 60;
+                horas--;
+            }
 
-  if (horas < 0) {
-    horas += 24;
-    dias--;
-  }
+            if (horas < 0) {
+                horas += 24;
+                dias--;
+            }
 
-  if (dias < 0) {
-    const ultimoDiaMesAnterior = new Date(fin.getFullYear(), fin.getMonth(), 0).getDate();
-    dias += ultimoDiaMesAnterior;
-    meses--;
-  }
+            if (dias < 0) {
+                const ultimoDiaMesAnterior = new Date(fin.getFullYear(), fin.getMonth(), 0).getDate();
+                dias += ultimoDiaMesAnterior;
+                meses--;
+            }
 
-  if (meses < 0) {
-    meses += 12;
-    años--;
-  }
+            if (meses < 0) {
+                meses += 12;
+                años--;
+            }
 
-  const semanas = Math.floor(dias / 7);
-  const diasRestantes = dias % 7;
+            const semanas = Math.floor(dias / 7);
+            const diasRestantes = dias % 7;
 
-  return {
-    años,
-    meses,
-    semanas,
-    dias: diasRestantes,
-    horas,
-    minutos,
-    segundos
-  };
-}
+            return {
+                años,
+                meses,
+                semanas,
+                dias: diasRestantes,
+                horas,
+                minutos,
+                segundos
+            };
+        }
 
-function plural(numero, singular, plural) {
-  return numero === 1 ? singular : plural;
-}
+        function plural(numero, singular, plural) {
+            return numero === 1 ? singular : plural;
+        }
 
-function actualizarContador() {
-  const ahora = new Date();
+        function actualizarContador() {
+            const ahora = new Date();
 
-  if (ahora < FECHA_INICIO) {
-    contadorTiempo.innerHTML = 'Esa fecha todavía no ha llegado.';
-    return;
-  }
+            if (ahora < FECHA_INICIO) {
+                contadorTiempo.innerHTML = 'Esa fecha todavía no ha llegado.';
+                return;
+            }
 
-  const tiempo = calcularDiferenciaCompleta(FECHA_INICIO, ahora);
+            const tiempo = calcularDiferenciaCompleta(FECHA_INICIO, ahora);
 
-  contadorTiempo.innerHTML = `
+            contadorTiempo.innerHTML = `
     <span>${tiempo.años}</span> ${plural(tiempo.años, 'año', 'años')},
     <span>${tiempo.meses}</span> ${plural(tiempo.meses, 'mes', 'meses')},
     <span>${tiempo.semanas}</span> ${plural(tiempo.semanas, 'semana', 'semanas')},
@@ -236,221 +247,252 @@ function actualizarContador() {
     <span>${tiempo.minutos}</span> ${plural(tiempo.minutos, 'minuto', 'minutos')} y
     <span>${tiempo.segundos}</span> ${plural(tiempo.segundos, 'segundo', 'segundos')}
   `;
-}
+        }
 
-setInterval(actualizarContador, 1000);
-actualizarContador();
+        setInterval(actualizarContador, 1000);
+        actualizarContador();
 
-/* ============================
-   CORAZÓN ROJO MINIMALISTA
-============================ */
+        /* ============================
+           CORAZÓN BLANCO LATENTE
+        ============================ */
 
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
 
-let W, H, CX, CY, SCALE;
+        let W, H, CX, CY, SCALE, baseScale;
+        let pulseTime = 0;
 
-function setup() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-  CX = W / 2;
-  CY = H / 2;
-  SCALE = Math.min(W, H) / 33;
+        function setup() {
+            const dpr = window.devicePixelRatio || 1;
 
-  ctx.fillStyle = '#000';
-  ctx.fillRect(0, 0, W, H);
-}
+            W = window.innerWidth;
+            H = window.innerHeight;
 
-function heartPoint(t) {
-  return {
-    x: 16 * Math.pow(Math.sin(t), 3),
-    y: -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t))
-  };
-}
+            canvas.width = Math.round(W * dpr);
+            canvas.height = Math.round(H * dpr);
+            canvas.style.width = W + 'px';
+            canvas.style.height = H + 'px';
 
-class Particle {
-  constructor() {
-    this.reset();
-  }
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-  reset() {
-    this.t = Math.random() * Math.PI * 2;
-    this.speed = 0.003 + Math.random() * 0.01;
-    this.direction = Math.random() > 0.5 ? 1 : -1;
+            CX = W / 2;
+            CY = H / 2;
 
-    this.offsetRadial = (Math.random() - 0.5) * 18;
+            baseScale = Math.min(W, H) / 33;
+            SCALE = baseScale;
 
-    this.size = 0.55 + Math.random() * 1.15;
-    this.life = Math.random();
-    this.brightness = 0.45 + Math.random() * 0.5;
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, W, H);
+        }
 
-    this.twinkle = Math.random() > 0.985;
-  }
+        function heartPoint(t) {
+            return {
+                x: 16 * Math.pow(Math.sin(t), 3),
+                y: -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t))
+            };
+        }
 
-  update() {
-    this.t += this.speed * this.direction;
+        class Particle {
+            constructor() {
+                this.reset();
+            }
 
-    if (this.t > Math.PI * 2) this.t -= Math.PI * 2;
-    if (this.t < 0) this.t += Math.PI * 2;
+            reset() {
+                this.t = Math.random() * Math.PI * 2;
+                this.speed = 0.003 + Math.random() * 0.01;
+                this.direction = Math.random() > 0.5 ? 1 : -1;
 
-    this.life += 0.003;
+                this.offsetRadial = (Math.random() - 0.5) * 18;
 
-    if (this.life > 1) {
-      this.reset();
-    }
-  }
+                this.size = 0.55 + Math.random() * 1.15;
+                this.life = Math.random();
+                this.brightness = 0.45 + Math.random() * 0.5;
 
-  draw() {
-    const p = heartPoint(this.t);
-    const pNext = heartPoint(this.t + 0.01);
+                this.twinkle = Math.random() > 0.985;
+            }
 
-    const dx = pNext.x - p.x;
-    const dy = pNext.y - p.y;
-    const len = Math.sqrt(dx * dx + dy * dy) || 1;
+            update() {
+                this.t += this.speed * this.direction;
 
-    const nx = -dy / len;
-    const ny = dx / len;
+                if (this.t > Math.PI * 2) this.t -= Math.PI * 2;
+                if (this.t < 0) this.t += Math.PI * 2;
 
-    const x = CX + (p.x + nx * this.offsetRadial / SCALE) * SCALE;
-    const y = CY + (p.y + ny * this.offsetRadial / SCALE) * SCALE;
+                this.life += 0.003;
 
-    const fade = 1 - Math.abs(this.life - 0.5) * 1.2;
-    const alpha = Math.max(0, this.brightness * fade);
+                if (this.life > 1) {
+                    this.reset();
+                }
+            }
 
-    ctx.save();
-    ctx.globalCompositeOperation = 'lighter';
+            draw() {
+                const p = heartPoint(this.t);
+                const pNext = heartPoint(this.t + 0.01);
 
-    if (this.twinkle) {
-      ctx.shadowBlur = 24;
-      ctx.shadowColor = 'rgba(255, 70, 70, 1)';
-      ctx.fillStyle = `rgba(255, 210, 210, ${alpha})`;
+                const dx = pNext.x - p.x;
+                const dy = pNext.y - p.y;
+                const len = Math.sqrt(dx * dx + dy * dy) || 1;
 
-      ctx.beginPath();
-      ctx.arc(x, y, this.size * 2.3, 0, Math.PI * 2);
-      ctx.fill();
-    } else {
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = 'rgba(255, 0, 0, 0.7)';
-      ctx.fillStyle = `rgba(255, 42, 42, ${alpha})`;
+                const nx = -dy / len;
+                const ny = dx / len;
 
-      ctx.beginPath();
-      ctx.arc(x, y, this.size, 0, Math.PI * 2);
-      ctx.fill();
-    }
+                const x = CX + (p.x + nx * this.offsetRadial / SCALE) * SCALE;
+                const y = CY + (p.y + ny * this.offsetRadial / SCALE) * SCALE;
 
-    ctx.restore();
-  }
-}
+                const fade = 1 - Math.abs(this.life - 0.5) * 1.2;
+                const alpha = Math.max(0, this.brightness * fade);
 
-class InnerGlow {
-  constructor() {
-    this.reset();
-  }
+                ctx.save();
+                ctx.globalCompositeOperation = 'lighter';
 
-  reset() {
-    this.t = Math.random() * Math.PI * 2;
-    this.radius = Math.random();
-    this.size = 12 + Math.random() * 28;
-    this.alpha = 0.008 + Math.random() * 0.018;
-    this.speed = 0.0007 + Math.random() * 0.0018;
-  }
+                if (this.twinkle) {
+                    ctx.shadowBlur = 24;
+                    ctx.shadowColor = 'rgba(255, 255, 255, 1)';
+                    ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
 
-  update() {
-    this.t += this.speed;
+                    ctx.beginPath();
+                    ctx.arc(x, y, this.size * 2.3, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = 'rgba(255, 255, 255, 0.7)';
+                    ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
 
-    if (this.t > Math.PI * 2) {
-      this.t -= Math.PI * 2;
-    }
-  }
+                    ctx.beginPath();
+                    ctx.arc(x, y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
 
-  draw() {
-    const p = heartPoint(this.t);
+                ctx.restore();
+            }
+        }
 
-    const x = CX + p.x * SCALE * this.radius;
-    const y = CY + p.y * SCALE * this.radius;
+        class InnerGlow {
+            constructor() {
+                this.reset();
+            }
 
-    const gradient = ctx.createRadialGradient(x, y, 0, x, y, this.size);
-    gradient.addColorStop(0, `rgba(255, 0, 0, ${this.alpha})`);
-    gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
+            reset() {
+                this.t = Math.random() * Math.PI * 2;
+                this.radius = Math.random();
+                this.size = 12 + Math.random() * 28;
+                this.alpha = 0.008 + Math.random() * 0.018;
+                this.speed = 0.0007 + Math.random() * 0.0018;
+            }
 
-    ctx.fillStyle = gradient;
-    ctx.beginPath();
-    ctx.arc(x, y, this.size, 0, Math.PI * 2);
-    ctx.fill();
-  }
-}
+            update() {
+                this.t += this.speed;
 
-const particles = [];
-const innerGlow = [];
+                if (this.t > Math.PI * 2) {
+                    this.t -= Math.PI * 2;
+                }
+            }
 
-const NUM_PARTICLES = 620;
-const NUM_INNER_GLOW = 80;
+            draw() {
+                const p = heartPoint(this.t);
 
-function initParticles() {
-  particles.length = 0;
-  innerGlow.length = 0;
+                const x = CX + p.x * SCALE * this.radius;
+                const y = CY + p.y * SCALE * this.radius;
 
-  for (let i = 0; i < NUM_PARTICLES; i++) {
-    particles.push(new Particle());
-  }
+                const gradient = ctx.createRadialGradient(x, y, 0, x, y, this.size);
+                gradient.addColorStop(0, `rgba(255, 255, 255, ${this.alpha})`);
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
-  for (let i = 0; i < NUM_INNER_GLOW; i++) {
-    innerGlow.push(new InnerGlow());
-  }
-}
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(x, y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
 
-function drawSoftHeartLine() {
-  ctx.save();
-  ctx.globalCompositeOperation = 'lighter';
+        const particles = [];
+        const innerGlow = [];
 
-  ctx.beginPath();
+        function getAjustesRendimiento() {
+            const esMovil = window.innerWidth < 700;
+            const movimientoReducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  for (let t = 0; t <= Math.PI * 2 + 0.02; t += 0.02) {
-    const p = heartPoint(t);
-    const x = CX + p.x * SCALE;
-    const y = CY + p.y * SCALE;
+            if (movimientoReducido) {
+                return { particulas: esMovil ? 260 : 340, glow: esMovil ? 30 : 40 };
+            }
 
-    if (t === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
-  }
+            return { particulas: esMovil ? 420 : 620, glow: esMovil ? 55 : 80 };
+        }
 
-  ctx.strokeStyle = 'rgba(255, 20, 20, 0.17)';
-  ctx.lineWidth = 4;
-  ctx.shadowBlur = 22;
-  ctx.shadowColor = 'rgba(255, 0, 0, 0.75)';
-  ctx.stroke();
+        function initParticles() {
+            const { particulas: numParticulas, glow: numGlow } = getAjustesRendimiento();
 
-  ctx.restore();
-}
+            particles.length = 0;
+            innerGlow.length = 0;
 
-function animate() {
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.105)';
-  ctx.fillRect(0, 0, W, H);
+            for (let i = 0; i < numParticulas; i++) {
+                particles.push(new Particle());
+            }
 
-  innerGlow.forEach(g => {
-    g.update();
-    g.draw();
-  });
+            for (let i = 0; i < numGlow; i++) {
+                innerGlow.push(new InnerGlow());
+            }
+        }
 
-  drawSoftHeartLine();
+        function drawSoftHeartLine() {
+            ctx.save();
+            ctx.globalCompositeOperation = 'lighter';
 
-  particles.forEach(p => {
-    p.update();
-    p.draw();
-  });
+            ctx.beginPath();
 
-  requestAnimationFrame(animate);
-}
+            for (let t = 0; t <= Math.PI * 2 + 0.02; t += 0.02) {
+                const p = heartPoint(t);
+                const x = CX + p.x * SCALE;
+                const y = CY + p.y * SCALE;
 
-setup();
-initParticles();
-animate();
+                if (t === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
 
-window.addEventListener('resize', () => {
-  setup();
-  initParticles();
-});
-</script>
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.17)';
+            ctx.lineWidth = 4;
+            ctx.shadowBlur = 22;
+            ctx.shadowColor = 'rgba(255, 255, 255, 0.75)';
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function animate() {
+            pulseTime += 0.035;
+            SCALE = baseScale * (1 + Math.sin(pulseTime) * 0.06);
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.105)';
+            ctx.fillRect(0, 0, W, H);
+
+            innerGlow.forEach(g => {
+                g.update();
+                g.draw();
+            });
+
+            drawSoftHeartLine();
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        setup();
+        initParticles();
+        animate();
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                setup();
+                initParticles();
+            }, 150);
+        });
+    </script>
 
 </body>
+
 </html>
