@@ -3,27 +3,44 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
     <title>🤍TE QUIERO🤍</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Great+Vibes&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap"
         rel="stylesheet">
 
     <style>
+        :root {
+            --oro: 205, 155, 75;
+            --crema: 255, 240, 222;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html,
+        body {
+            height: 100%;
+        }
+
         body {
             background: #000;
             overflow: hidden;
-            height: 100vh;
             width: 100vw;
+            height: 100vh;
+            height: 100dvh;
             position: relative;
+            touch-action: none;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         canvas {
@@ -32,24 +49,33 @@
             inset: 0;
         }
 
+        /* Todo lo que aparece después de abrir la sorpresa */
+        .ui {
+            opacity: 0;
+            transition: opacity 2.2s ease 2.6s;
+        }
+
+        body.abierto .ui {
+            opacity: 1;
+        }
+
         .nombre-centro {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: rgba(255, 255, 255, 0.96);
-            font-family: fantasy;
-            font-size: clamp(28px, 8vw, 54px);
-            font-weight: 600;
+            color: #fff;
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(38px, 10vw, 68px);
             z-index: 10;
-            letter-spacing: clamp(4px, 1.6vw, 10px);
             max-width: 92vw;
             text-align: center;
+            white-space: nowrap;
             pointer-events: none;
-            user-select: none;
             text-shadow:
-                0 0 10px rgba(255, 255, 255, 0.35),
-                0 0 28px rgba(255, 255, 255, 0.22);
+                0 0 4px rgba(0, 0, 0, 0.75),
+                0 0 14px rgba(0, 0, 0, 0.55),
+                0 0 26px rgba(var(--oro), 0.7);
         }
 
         .firma {
@@ -61,20 +87,15 @@
             font-size: 40px;
             z-index: 10;
             pointer-events: none;
-            user-select: none;
             text-shadow:
-                0 0 10px rgba(205, 155, 75, 1),
-                0 0 24px rgba(205, 155, 75, 1);
+                0 0 10px rgba(var(--oro), 1),
+                0 0 24px rgba(var(--oro), 1);
             animation: pulseSign 4s infinite ease-in-out;
         }
 
         .firma::after {
             content: ' ♡';
             color: white;
-            text-shadow:
-                0 0 10px rgba(205, 155, 75, 1),
-                0 0 24px rgba(205, 155, 75, 1);
-            animation: pulseSign 4s infinite ease-in-out
         }
 
         .contador {
@@ -83,7 +104,6 @@
             left: 34px;
             z-index: 10;
             pointer-events: none;
-            user-select: none;
             font-family: 'Poppins', sans-serif;
             color: rgba(255, 255, 255, 0.76);
             text-shadow:
@@ -95,7 +115,7 @@
             font-size: 10px;
             letter-spacing: 6px;
             text-transform: uppercase;
-            color: rgba(205, 155, 75);
+            color: rgb(var(--oro));
             margin-bottom: 10px;
         }
 
@@ -107,7 +127,7 @@
         }
 
         .contador-tiempo span {
-            color: rgba(205, 155, 75, 0.95);
+            color: rgba(var(--oro), 0.95);
             font-weight: 600;
         }
 
@@ -125,6 +145,204 @@
             }
         }
 
+        /* ====== FRASES BAJO EL CORAZÓN ====== */
+        .textos {
+            position: fixed;
+            left: 50%;
+            top: 78%;
+            transform: translateX(-50%);
+            width: min(88vw, 640px);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .frase {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-style: italic;
+            font-weight: 500;
+            font-size: clamp(19px, 4.8vw, 27px);
+            line-height: 1.35;
+            letter-spacing: 0.4px;
+            color: rgba(var(--crema), 0.95);
+            text-shadow:
+                0 0 12px rgba(var(--oro), 0.55),
+                0 0 2px rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            transform: translateY(8px);
+            filter: blur(3px);
+            transition: opacity 1.2s ease, transform 1.2s ease, filter 1.2s ease;
+            min-height: 1.35em;
+        }
+
+        .frase.visible {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
+        .pista {
+            font-family: 'Poppins', sans-serif;
+            font-size: 10px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: rgba(var(--oro), 0.9);
+            opacity: 0;
+            transition: opacity 1.4s ease;
+        }
+
+        .pista.visible {
+            opacity: 1;
+            animation: respirar 2.4s ease-in-out infinite;
+        }
+
+        @keyframes respirar {
+
+            0%,
+            100% {
+                opacity: 0.45;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Mensajitos que salen al tocar el corazón */
+        .mensaje-flotante {
+            position: fixed;
+            z-index: 12;
+            pointer-events: none;
+            font-family: 'Great Vibes', cursive;
+            font-size: 30px;
+            color: #fff;
+            white-space: nowrap;
+            text-shadow:
+                0 0 10px rgba(var(--oro), 1),
+                0 0 24px rgba(var(--oro), 0.8);
+            animation: flotarMensaje 2.6s ease-out forwards;
+        }
+
+        @keyframes flotarMensaje {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -30%) scale(0.8);
+            }
+
+            15% {
+                opacity: 1;
+                transform: translate(-50%, -70%) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -280%) scale(1.05);
+            }
+        }
+
+        /* ====== PANTALLA DE INICIO ====== */
+        .intro {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            background: radial-gradient(ellipse at center,
+                    rgba(0, 0, 0, 0.35) 0%,
+                    rgba(0, 0, 0, 0.72) 65%,
+                    rgba(0, 0, 0, 0.92) 100%);
+            transition: opacity 1.6s ease, visibility 1.6s;
+        }
+
+        .intro.oculto {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .intro-sobre {
+            font-family: 'Poppins', sans-serif;
+            font-size: 11px;
+            letter-spacing: 8px;
+            padding-left: 8px;
+            text-transform: uppercase;
+            color: rgb(var(--oro));
+        }
+
+        .intro-titulo {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(42px, 11vw, 76px);
+            line-height: 1.1;
+            color: #fff;
+            text-shadow:
+                0 0 12px rgba(var(--oro), 0.9),
+                0 0 32px rgba(var(--oro), 0.5);
+        }
+
+        .intro-boton {
+            margin-top: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(var(--crema), 0.95);
+            background: rgba(20, 15, 0, 0.45);
+            border: 1px solid rgba(var(--oro), 0.7);
+            border-radius: 999px;
+            padding: 14px 30px 14px 34px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            box-shadow: 0 0 18px rgba(var(--oro), 0.25);
+            animation: latirBoton 1.7s ease-in-out infinite;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .intro-boton:hover,
+        .intro-boton:focus-visible {
+            background: rgba(var(--oro), 0.28);
+            box-shadow: 0 0 26px rgba(var(--oro), 0.5);
+            outline: none;
+        }
+
+        .intro-nota {
+            font-family: 'Poppins', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        @keyframes latirBoton {
+
+            0%,
+            42%,
+            100% {
+                transform: scale(1);
+            }
+
+            10% {
+                transform: scale(1.06);
+            }
+
+            20% {
+                transform: scale(1);
+            }
+
+            30% {
+                transform: scale(1.035);
+            }
+        }
+
         /* ====== CONTROL DE MÚSICA ====== */
         .btn-audio {
             position: fixed;
@@ -134,19 +352,27 @@
             width: 42px;
             height: 42px;
             border-radius: 50%;
-            border: 1px solid rgba(205, 155, 75, 0.6);
+            border: 1px solid rgba(var(--oro), 0.6);
             background: rgba(20, 15, 0, 0.55);
             color: rgba(255, 235, 200, 0.95);
             font-size: 18px;
             cursor: pointer;
             backdrop-filter: blur(4px);
-            transition: all 0.3s ease;
-            box-shadow: 0 0 14px rgba(205, 155, 75, 0.2);
+            -webkit-backdrop-filter: blur(4px);
+            box-shadow: 0 0 14px rgba(var(--oro), 0.2);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.6s ease 2.6s, background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.abierto .btn-audio {
+            opacity: 1;
+            pointer-events: auto;
         }
 
         .btn-audio:hover {
-            background: rgba(205, 155, 75, 0.3);
-            box-shadow: 0 0 20px rgba(205, 155, 75, 0.45);
+            background: rgba(var(--oro), 0.3);
+            box-shadow: 0 0 20px rgba(var(--oro), 0.45);
         }
 
         @media (max-width: 700px) {
@@ -181,6 +407,27 @@
                 font-size: 16px;
             }
         }
+
+        /* Móvil en horizontal: poco alto */
+        @media (max-height: 480px) {
+            .textos {
+                width: min(60vw, 520px);
+            }
+
+            .frase {
+                font-size: 16px;
+            }
+
+            .firma {
+                font-size: 22px;
+                bottom: 14px;
+                right: 18px;
+            }
+
+            .btn-audio {
+                bottom: 14px;
+            }
+        }
     </style>
 </head>
 
@@ -189,24 +436,69 @@
     <canvas id="canvas"></canvas>
 
     <audio id="miAudio" loop preload="auto">
-        <source src="Seya_Morad.m4a" type="audio/mpeg">
+        <source src="Seya_Morad.m4a" type="audio/mp4">
     </audio>
+
+    <!-- PANTALLA DE INICIO (también desbloquea la música) -->
+    <div class="intro" id="intro">
+        <div class="intro-sobre">Para ti</div>
+        <div class="intro-titulo">Tengo algo que enseñarte</div>
+        <button class="intro-boton" id="btnAbrir">Ábrelo 🤍</button>
+        <div class="intro-nota">sube el volumen 🎶</div>
+    </div>
 
     <button id="toggleAudio" class="btn-audio" aria-label="Reproducir o pausar música">🤍</button>
 
-    <div class="contador">
-        <div class="contador-titulo">DESDE AQUEL DÍA</div>
-        <div class="contador-tiempo" id="contadorTiempo"></div>
+    <div class="ui">
+        <div class="contador">
+            <div class="contador-titulo">DESDE AQUEL DÍA</div>
+            <div class="contador-tiempo" id="contadorTiempo"></div>
+        </div>
+
+        <!-- NOMBRE -->
+        <div class="nombre-centro" id="nombre"></div>
+        <div class="firma">Eres lo mejor que tengo</div>
     </div>
 
-    <!-- NOMBRE -->
-    <div class="nombre-centro"></div>
-    <div class="firma">Eres lo mejor que tengo</div>
+    <div class="textos" id="textos">
+        <div class="frase" id="frase"></div>
+        <div class="pista" id="pista">toca el corazón</div>
+    </div>
 
     <script>
+        /* =========================================
+           PERSONALIZA AQUÍ
+        ========================================= */
+
         /* Cambio de fecha */
         const FECHA_INICIO = new Date('2026-07-25T18:00:00');
 
+        // Escribe su nombre entre las comillas para que salga en el centro del corazón (ej: 'Lucía').
+        const NOMBRE = '';
+
+        // Frases que van apareciendo debajo del corazón, una detrás de otra.
+        const FRASES = [
+            'Cada latido de este corazón es para ti',
+            'Contigo hasta los días normales se sienten especiales',
+            'Mi lugar favorito del mundo es a tu lado',
+            'Eres mi casualidad más bonita',
+            'Gracias por quedarte, por reírte conmigo y por quererme así',
+            'Si tuviera que elegir otra vez, te elegiría a ti. Siempre.',
+            'Tu sonrisa es mi parte favorita del día',
+            'Eres mi calma y mi locura favorita',
+            'Contigo todo es más fácil, más bonito y más nuestro',
+            'Te quiero más de lo que sé explicar'
+        ];
+
+        // Mensajitos que salen cuando toca el corazón.
+        const MENSAJES_TOQUE = [
+            'te quiero', 'así late por ti', 'siempre tú', 'mi persona favorita',
+            'eres mi hogar', 'para siempre', 'mi vida', 'te adoro'
+        ];
+
+        /* =========================================
+           CONTADOR
+        ========================================= */
         const contadorTiempo = document.getElementById('contadorTiempo');
 
         function calcularDiferenciaCompleta(inicio, fin) {
@@ -285,331 +577,813 @@
         setInterval(actualizarContador, 1000);
         actualizarContador();
 
-        /* ============================
-           CORAZÓN BLANCO LATENTE Y PÉTALOS
-        ============================ */
+        /* =========================================
+           CORAZÓN 3D QUE LATE
+           Miles de partículas sobre la superficie de un
+           corazón en 3D, con luz, brillo y latido "lub-dub".
+        ========================================= */
 
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
+        const nombreEl = document.getElementById('nombre');
+        const textosEl = document.getElementById('textos');
+        const fraseEl = document.getElementById('frase');
+        const pistaEl = document.getElementById('pista');
 
-        let W, H, CX, CY, SCALE, baseScale;
-        let pulseTime = 0;
+        const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const esMovil = window.innerWidth < 700;
+
+        const D = 5; // distancia de la cámara (perspectiva)
+        let W, H, DPR, CX, CY, R, escalaGalaxia;
+
+        nombreEl.textContent = NOMBRE;
 
         function setup() {
-            const dpr = window.devicePixelRatio || 1;
-
+            DPR = Math.min(window.devicePixelRatio || 1, 2);
             W = window.innerWidth;
             H = window.innerHeight;
 
-            canvas.width = Math.round(W * dpr);
-            canvas.height = Math.round(H * dpr);
+            canvas.width = Math.round(W * DPR);
+            canvas.height = Math.round(H * DPR);
             canvas.style.width = W + 'px';
             canvas.style.height = H + 'px';
 
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
             CX = W / 2;
-            CY = H / 2;
+            CY = H * 0.47;
+            R = Math.min(W * 0.36, H * 0.25); // media altura del corazón en píxeles
+            escalaGalaxia = Math.min(1, (W * 0.62) / (2.8 * R));
 
-            baseScale = Math.min(W, H) / 33;
-            SCALE = baseScale;
-
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, W, H);
+            nombreEl.style.top = CY + 'px';
+            textosEl.style.top = (CY + R * 1.14 + 26) + 'px';
         }
 
-        function heartPoint(t) {
+        /* ---------- Colores y "pinceles" pre-dibujados ---------- */
+
+        const C_ORO = [205, 155, 75];
+        const C_ORO_CLARO = [242, 200, 130];
+        const C_CREMA = [255, 236, 214];
+        const C_ROSA = [255, 168, 188];
+        const C_BLANCO = [255, 250, 244];
+
+        function aclarar(c, q) {
+            return c.map(v => Math.round(v + (255 - v) * q));
+        }
+
+        // Punto de luz con núcleo brillante y halo suave
+        function crearSpritePunto(c) {
+            const t = 64, h = t / 2;
+            const cv = document.createElement('canvas');
+            cv.width = cv.height = t;
+            const g = cv.getContext('2d');
+            const gr = g.createRadialGradient(h, h, 0, h, h, h);
+            gr.addColorStop(0, `rgba(${aclarar(c, 0.65)},1)`);
+            gr.addColorStop(0.16, `rgba(${c},0.9)`);
+            gr.addColorStop(0.42, `rgba(${c},0.22)`);
+            gr.addColorStop(1, `rgba(${c},0)`);
+            g.fillStyle = gr;
+            g.fillRect(0, 0, t, t);
+            return cv;
+        }
+
+        // Forma de corazón en coordenadas unitarias (ancho 1)
+        function trazarCorazon(g) {
+            g.beginPath();
+            g.moveTo(0, -0.2);
+            g.bezierCurveTo(-0.1, -0.44, -0.5, -0.42, -0.5, -0.1);
+            g.bezierCurveTo(-0.5, 0.16, -0.22, 0.3, 0, 0.5);
+            g.bezierCurveTo(0.22, 0.3, 0.5, 0.16, 0.5, -0.1);
+            g.bezierCurveTo(0.5, -0.42, 0.1, -0.44, 0, -0.2);
+            g.closePath();
+        }
+
+        // Corazoncito con brillo
+        function crearSpriteCorazon(c) {
+            const t = 96;
+            const cv = document.createElement('canvas');
+            cv.width = cv.height = t;
+            const g = cv.getContext('2d');
+            g.translate(t / 2, t / 2 - t * 0.03);
+            g.shadowBlur = t * 0.14;
+            g.shadowColor = `rgba(${c},0.95)`;
+            g.scale(t * 0.58, t * 0.58);
+            const gr = g.createLinearGradient(0, -0.4, 0, 0.5);
+            gr.addColorStop(0, `rgba(${aclarar(c, 0.6)},1)`);
+            gr.addColorStop(1, `rgba(${c},1)`);
+            g.fillStyle = gr;
+            trazarCorazon(g);
+            g.fill();
+            return cv;
+        }
+
+        const SP = {
+            oro: crearSpritePunto(C_ORO),
+            oroClaro: crearSpritePunto(C_ORO_CLARO),
+            crema: crearSpritePunto(C_CREMA),
+            rosa: crearSpritePunto(C_ROSA),
+            blanco: crearSpritePunto(C_BLANCO)
+        };
+
+        const SPC = [
+            crearSpriteCorazon(C_CREMA),
+            crearSpriteCorazon(C_ORO_CLARO),
+            crearSpriteCorazon(C_ROSA)
+        ];
+
+        /* ---------- Geometría del corazón 3D ---------- */
+
+        // Superficie implícita de un corazón (Taubin): f = 0 en el borde, f < 0 dentro
+        function fCorazon(x, y, z) {
+            const a = x * x + 2.25 * z * z + y * y - 1;
+            return a * a * a - x * x * y * y * y - 0.1125 * z * z * y * y * y;
+        }
+
+        // Distancia desde el centro hasta la superficie en una dirección
+        function radioEnDireccion(dx, dy, dz) {
+            let lo = 0.3, hi = 2;
+            for (let r = 0.3; r < 2; r += 0.02) {
+                if (fCorazon(dx * r, dy * r, dz * r) > 0) { hi = r; break; }
+                lo = r;
+            }
+            for (let i = 0; i < 16; i++) {
+                const m = (lo + hi) / 2;
+                if (fCorazon(dx * m, dy * m, dz * m) > 0) hi = m;
+                else lo = m;
+            }
+            return (lo + hi) / 2;
+        }
+
+        function normalEn(x, y, z, dx, dy, dz) {
+            const e = 1e-3;
+            let nx = fCorazon(x + e, y, z) - fCorazon(x - e, y, z);
+            let ny = fCorazon(x, y + e, z) - fCorazon(x, y - e, z);
+            let nz = fCorazon(x, y, z + e) - fCorazon(x, y, z - e);
+            let l = Math.hypot(nx, ny, nz);
+            if (!(l > 1e-14)) { nx = dx; ny = dy; nz = dz; l = 1; }
+            nx /= l; ny /= l; nz /= l;
+            if (nx * dx + ny * dy + nz * dz < 0) { nx = -nx; ny = -ny; nz = -nz; }
+            return [nx, ny, nz];
+        }
+
+        function direccionAleatoria() {
+            const u = Math.random() * 2 - 1;
+            const th = Math.random() * Math.PI * 2;
+            const s = Math.sqrt(1 - u * u);
+            return [s * Math.cos(th), u, s * Math.sin(th)];
+        }
+
+        function gauss() {
+            return (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
+        }
+
+        const puntos = [];
+        const anillo = []; // contorno del corazón (para las ondas del latido)
+
+        function construirCorazon() {
+            const total = reducirMovimiento ? (esMovil ? 1600 : 2600) : (esMovil ? 2700 : 4000);
+            const nSup = Math.round(total * 0.8);
+            const nInt = total - nSup;
+
+            // Superficie, repartida de forma uniforme
+            const crudos = [];
+            const WMAX = 3.2;
+            while (crudos.length < nSup) {
+                const [dx, dy, dz] = direccionAleatoria();
+                const r = radioEnDireccion(dx, dy, dz);
+                const x = dx * r, y = dy * r, z = dz * r;
+                const n = normalEn(x, y, z, dx, dy, dz);
+                const cos = Math.max(0.35, n[0] * dx + n[1] * dy + n[2] * dz);
+                if (Math.random() * WMAX > (r * r) / cos) continue;
+                crudos.push({ x, y, z, nx: n[0], ny: n[1], nz: n[2], interior: false });
+            }
+
+            // Interior: un núcleo cálido que da volumen
+            for (let i = 0; i < nInt; i++) {
+                const [dx, dy, dz] = direccionAleatoria();
+                const r = radioEnDireccion(dx, dy, dz) * (0.35 + 0.57 * Math.pow(Math.random(), 0.6));
+                crudos.push({ x: dx * r, y: dy * r, z: dz * r, nx: dx, ny: dy, nz: dz, interior: true });
+            }
+
+            // Centrar y normalizar: media altura = 1
+            let minY = Infinity, maxY = -Infinity;
+            for (const p of crudos) {
+                if (p.interior) continue;
+                if (p.y < minY) minY = p.y;
+                if (p.y > maxY) maxY = p.y;
+            }
+            const cy0 = (minY + maxY) / 2;
+            const mitad = (maxY - minY) / 2;
+
+            for (const p of crudos) {
+                const y = (p.y - cy0) / mitad;
+                const rnd = Math.random();
+                let sprite;
+                if (p.interior) {
+                    sprite = rnd < 0.45 ? SP.crema : rnd < 0.75 ? SP.rosa : SP.oroClaro;
+                } else {
+                    sprite = rnd < 0.36 ? SP.oro : rnd < 0.62 ? SP.oroClaro : rnd < 0.88 ? SP.crema : SP.rosa;
+                }
+
+                const brazo = Math.random() < 0.5 ? 0 : Math.PI;
+                const gr = 0.5 + 2.3 * Math.pow(Math.random(), 1.4);
+
+                puntos.push({
+                    x: p.x / mitad, y, z: p.z / mitad,
+                    nx: p.nx, ny: p.ny, nz: p.nz,
+                    interior: p.interior,
+                    sprite,
+                    tam: p.interior ? 1.6 + Math.random() * 2 : 1.8 + Math.random() * 2.4,
+                    alfa: p.interior ? 0.35 + Math.random() * 0.3 : 0.65 + Math.random() * 0.4,
+                    tw: 0.8 + Math.random() * 2.2,
+                    ph: Math.random() * Math.PI * 2,
+                    // Se forma de abajo hacia arriba, con algo de azar
+                    retraso: 0.55 * Math.random() + 0.3 * ((y + 1) / 2),
+                    arco: (Math.random() - 0.5) * 0.9,
+                    // Posición inicial: una galaxia de polvo de estrellas
+                    gr,
+                    ga: brazo + gr * 1.8 + gauss() * 0.55,
+                    gh: gauss() * 0.12 * (1.3 - gr / 3),
+                    gw: 0.35 / (0.6 + gr),
+                    px: CX, py: CY
+                });
+            }
+
+            // Contorno frontal (corte z = 0)
+            for (let i = 0; i < 140; i++) {
+                const th = (i / 140) * Math.PI * 2;
+                const dx = Math.sin(th), dy = Math.cos(th);
+                const r = radioEnDireccion(dx, dy, 0);
+                anillo.push({ x: (dx * r) / mitad, y: (dy * r - cy0) / mitad });
+            }
+        }
+
+        /* ---------- Estado ---------- */
+
+        const estrellas = [];
+        for (let i = 0; i < (esMovil ? 90 : 170); i++) {
+            estrellas.push({
+                x: Math.random(),
+                y: Math.random(),
+                r: Math.random() < 0.9 ? 0.6 + Math.random() * 0.8 : 1.4 + Math.random() * 0.8,
+                a: 0.15 + Math.random() * 0.55,
+                v: 0.4 + Math.random() * 1.6,
+                f: Math.random() * Math.PI * 2
+            });
+        }
+
+        const flotantes = [];
+        const chispas = [];
+        const ondas = [];
+        const corazonesToque = [];
+
+        let T = 0;
+        let ultimo = performance.now();
+        let abierto = false;
+        let momentoApertura = 0;
+        let formacion = 0;
+        let formado = false;
+
+        const BPM_BASE = 66;
+        let fase = 0;
+        let extraBpm = 0;
+        let brilloToque = 0;
+        let latido = 0;
+
+        let yaw = 0, pitch = 0.1;
+        let parX = 0, parY = 0, objX = 0, objY = 0;
+
+        const LUZ = normalizar(-0.45, 0.6, 0.75);
+        const MEDIO = normalizar(LUZ[0], LUZ[1], LUZ[2] + 1);
+
+        const INCL = 0.9, COS_I = Math.cos(INCL), SIN_I = Math.sin(INCL);
+        const GIRO = -0.35, COS_G = Math.cos(GIRO), SIN_G = Math.sin(GIRO);
+
+        function normalizar(x, y, z) {
+            const l = Math.hypot(x, y, z);
+            return [x / l, y / l, z / l];
+        }
+
+        // Pulso con subida rápida y caída suave
+        function envolvente(x, w) {
+            if (x < 0) return 0;
+            const t = x / w;
+            return t * Math.exp(1 - t);
+        }
+
+        function suavizar(k) {
+            return k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+        }
+
+        function crearFlotante(inicial) {
             return {
-                x: 16 * Math.pow(Math.sin(t), 3),
-                y: -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t))
+                x: Math.random() * W,
+                y: inicial ? Math.random() * H : H + 40,
+                s: 12 + Math.random() * 22,
+                vy: 12 + Math.random() * 22,
+                amp: 8 + Math.random() * 24,
+                fr: 0.3 + Math.random() * 0.6,
+                f: Math.random() * Math.PI * 2,
+                rot: (Math.random() - 0.5) * 0.5,
+                a: 0.1 + Math.random() * 0.22,
+                sp: SPC[Math.floor(Math.random() * SPC.length)]
             };
         }
 
-        // --- Clases de Elementos Visuales ---
-
-        // Partículas del borde (se mantienen para la estructura)
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-
-            reset() {
-                this.t = Math.random() * Math.PI * 2;
-                this.speed = 0.003 + Math.random() * 0.01;
-                this.direction = Math.random() > 0.5 ? 1 : -1;
-
-                this.offsetRadial = (Math.random() - 0.5) * 18;
-
-                this.size = 0.55 + Math.random() * 1.15;
-                this.life = Math.random();
-                this.brightness = 0.45 + Math.random() * 0.5;
-
-                this.twinkle = Math.random() > 0.985;
-            }
-
-            update() {
-                this.t += this.speed * this.direction;
-
-                if (this.t > Math.PI * 2) this.t -= Math.PI * 2;
-                if (this.t < 0) this.t += Math.PI * 2;
-
-                this.life += 0.003;
-
-                if (this.life > 1) {
-                    this.reset();
-                }
-            }
-
-            draw() {
-                const p = heartPoint(this.t);
-                const pNext = heartPoint(this.t + 0.01);
-
-                const dx = pNext.x - p.x;
-                const dy = pNext.y - p.y;
-                const len = Math.sqrt(dx * dx + dy * dy) || 1;
-
-                const nx = -dy / len;
-                const ny = dx / len;
-
-                const x = CX + (p.x + nx * this.offsetRadial / SCALE) * SCALE;
-                const y = CY + (p.y + ny * this.offsetRadial / SCALE) * SCALE;
-
-                const fade = 1 - Math.abs(this.life - 0.5) * 1.2;
-                const alpha = Math.max(0, this.brightness * fade);
-
-                ctx.save();
-                ctx.globalCompositeOperation = 'lighter';
-
-                if (this.twinkle) {
-                    ctx.shadowBlur = 24;
-                    ctx.shadowColor = 'rgba(205, 155, 75, 1)';
-                    ctx.fillStyle = `rgba(205, 155, 75, ${alpha})`;
-
-                    ctx.beginPath();
-                    ctx.arc(x, y, this.size * 2.3, 0, Math.PI * 2);
-                    ctx.fill();
-                } else {
-                    ctx.shadowBlur = 10;
-                    ctx.shadowColor = 'rgba(205, 155, 75, 0.7)';
-                    ctx.fillStyle = `rgba(205, 155, 75, ${alpha})`;
-
-                    ctx.beginPath();
-                    ctx.arc(x, y, this.size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-
-                ctx.restore();
-            }
+        function dibujarSprite(img, x, y, s, rot, a) {
+            const c = Math.cos(rot) * DPR, sn = Math.sin(rot) * DPR;
+            ctx.setTransform(c, sn, -sn, c, x * DPR, y * DPR);
+            ctx.globalAlpha = a;
+            ctx.drawImage(img, -s / 2, -s / 2, s, s);
         }
 
-        // Nueva Clase: Pétalo de Flor (sustituye a InnerGlow)
-        class Petal {
-            constructor() {
-                this.reset();
-            }
+        /* ---------- Dibujo ---------- */
 
-            reset() {
-                // Posición inicial aleatoria DENTRO del corazón
-                this.t = Math.random() * Math.PI * 2;
-                this.radius = Math.random() * 0.95; // Distancia del centro (0 a 95% del borde)
-
-                this.size = (0.8 + Math.random() * 2.5) * 1.3; // Tamaños variados, algo más grandes
-                this.life = Math.random();
-                this.alphaMax = 0.2 + Math.random() * 0.6; // Suave transparencia
-
-                // Colores florales suaves (blancos, cremas, rosa muy suave)
-                // Usando hsl para mejores variaciones florales
-                const hue = Math.random() > 0.8 ? 350 + Math.random() * 10 : 340 + Math.random() * 20; // Algunos rosa más notables
-                const saturation = 10 + Math.random() * 15;
-                const lightness = 85 + Math.random() * 12;
-                this.color = `hsla(${hue}, ${saturation}%, ${lightness}%, 1)`;
-
-                this.angle = Math.random() * Math.PI * 2;
-                this.angleSpeed = (Math.random() - 0.5) * 0.04; // Rotación lenta
-
-                // Movimiento suave y errático (deriva)
-                this.dx = (Math.random() - 0.5) * 0.003;
-                this.dy = (Math.random() - 0.5) * 0.003;
-            }
-
-            update() {
-                this.t += this.angleSpeed * 0.1; // Pequeña rotación alrededor del camino
-                this.angle += this.angleSpeed;
-
-                // Deriva lenta
-                this.radius += (this.dx + this.dy) * 0.1;
-
-                this.life += 0.003;
-                if (this.life > 1) {
-                    this.reset();
-                }
-            }
-
-            draw() {
-                const pBoundary = heartPoint(this.t);
-                const p = {
-                    x: pBoundary.x * this.radius,
-                    y: pBoundary.y * this.radius
-                };
-
-                const x = CX + p.x * SCALE;
-                const y = CY + p.y * SCALE;
-
-                const size = this.size * SCALE / baseScale; // Escalar tamaño con el corazón
-
-                // Lógica de fade in/out
-                const fade = 1 - Math.abs(this.life - 0.5) * 2;
-                const alpha = Math.max(0, this.alphaMax * fade);
-
-                ctx.save();
-                ctx.translate(x, y);
-                ctx.rotate(this.angle);
-                ctx.globalAlpha = alpha;
-
-                // Forma de pétalo elegante (una sola lágrima alargada)
-                ctx.beginPath();
-                ctx.moveTo(0, -size);
-                ctx.bezierCurveTo(size * 1.1, -size * 1.3, size * 2.1, size * 0.6, 0, size * 1.4);
-                ctx.bezierCurveTo(-size * 2.1, size * 0.6, -size * 1.1, -size * 1.3, 0, -size);
-
-                ctx.fillStyle = this.color;
-                ctx.shadowBlur = size * 3;
-                ctx.shadowColor = 'rgba(255, 230, 240, 1)'; // Sombra rosa sutil
-                ctx.fill();
-
-                ctx.restore();
-            }
-        }
-
-        // --- Gestión de Elementos y Animación ---
-
-        const particles = [];
-        const petals = []; // Renombrado de innerGlow a petals
-
-        function getAjustesRendimiento() {
-            const esMovil = window.innerWidth < 700;
-            const movimientoReducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            if (movimientoReducido) {
-                return { particulas: esMovil ? 260 : 340, petalos: esMovil ? 90 : 150 };
-            }
-
-            // Más pétalos para llenar el interior
-            return { particulas: esMovil ? 420 : 620, petalos: esMovil ? 120 : 200 };
-        }
-
-        function initParticles() {
-            const { particulas: numParticulas, petalos: numPetalos } = getAjustesRendimiento();
-
-            particles.length = 0;
-            petals.length = 0;
-
-            for (let i = 0; i < numParticulas; i++) {
-                particles.push(new Particle());
-            }
-
-            for (let i = 0; i < numPetalos; i++) {
-                petals.push(new Petal()); // Rellenar con pétalos
-            }
-        }
-
-        function drawSoftHeartLine() {
-            ctx.save();
-            ctx.globalCompositeOperation = 'lighter';
-
-            ctx.beginPath();
-
-            for (let t = 0; t <= Math.PI * 2 + 0.02; t += 0.02) {
-                const p = heartPoint(t);
-                const x = CX + p.x * SCALE;
-                const y = CY + p.y * SCALE;
-
-                if (t === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            }
-
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.17)';
-            ctx.lineWidth = 4;
-            ctx.shadowBlur = 22;
-            ctx.shadowColor = 'rgba(205, 155, 75, 1)';
-            ctx.stroke();
-
-            ctx.restore();
-        }
-
-        function animate() {
-            pulseTime += 0.035;
-            SCALE = baseScale * (1 + Math.sin(pulseTime) * 0.06);
-
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.105)';
+        function dibujarFondo() {
+            ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = '#000';
             ctx.fillRect(0, 0, W, H);
 
-            // Animar y dibujar pétalos primero (fondo)
-            petals.forEach(p => {
-                p.update();
-                p.draw();
-            });
+            ctx.fillStyle = '#fff';
+            for (const e of estrellas) {
+                ctx.globalAlpha = e.a * (0.55 + 0.45 * Math.sin(T * e.v + e.f));
+                ctx.fillRect(e.x * W, e.y * H, e.r, e.r);
+            }
 
-            drawSoftHeartLine(); // Borde suave
+            // Halo cálido detrás del corazón, que respira con cada latido
+            const intensidad = abierto ? 1 : 0.5;
+            const g = ctx.createRadialGradient(CX, CY, 0, CX, CY, R * 3);
+            g.addColorStop(0, `rgba(205,155,75,${(0.09 + 0.08 * latido + 0.06 * brilloToque) * intensidad})`);
+            g.addColorStop(0.4, `rgba(160,70,80,${(0.045 + 0.03 * latido) * intensidad})`);
+            g.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, W, H);
+        }
 
-            // Animar y dibujar partículas (borde brillante)
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
+        function dibujarFlotantes(dt) {
+            ctx.globalCompositeOperation = 'source-over';
+            const atenuar = abierto ? 1 : 0.4;
+            for (let i = 0; i < flotantes.length; i++) {
+                const h = flotantes[i];
+                h.y -= h.vy * dt;
+                if (h.y < -40) {
+                    flotantes[i] = crearFlotante(false);
+                    continue;
+                }
+                const x = h.x + Math.sin(T * h.fr + h.f) * h.amp;
+                const rot = h.rot + Math.sin(T * h.fr * 0.8 + h.f) * 0.25;
+                const arriba = Math.min(1, Math.max(0, h.y / (H * 0.25)));
+                const abajo = Math.min(1, Math.max(0, (H + 40 - h.y) / 100));
+                dibujarSprite(h.sp, x, h.y, h.s, rot, h.a * arriba * abajo * atenuar);
+            }
+            ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        }
 
-            requestAnimationFrame(animate);
+        function dibujarCorazon(escala) {
+            const cyw = Math.cos(yaw), syw = Math.sin(yaw);
+            const cp = Math.cos(pitch), sp = Math.sin(pitch);
+            const [LX, LY, LZ] = LUZ;
+            const [HX, HY, HZ] = MEDIO;
+            const tamBase = R / 160;
+            const brillo = (abierto ? 1 : 0.55) * (1 + 0.3 * brilloToque);
+
+            ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+            ctx.globalCompositeOperation = 'lighter';
+
+            for (let i = 0; i < puntos.length; i++) {
+                const p = puntos[i];
+                const osc = Math.sin(T * p.tw + p.ph);
+                const s = escala * (1 + 0.01 * osc);
+
+                // Rotar el punto (giro horizontal y luego inclinación)
+                const x = p.x * s, y = p.y * s, z = p.z * s;
+                const z1 = z * cyw - x * syw;
+                let vx = x * cyw + z * syw;
+                let vy = y * cp - z1 * sp;
+                let vz = y * sp + z1 * cp;
+
+                // Iluminación
+                let luz, brilloEsp = 0;
+                if (p.interior) {
+                    luz = 0.55;
+                } else {
+                    const nx = p.nx * cyw + p.nz * syw;
+                    const nz1 = p.nz * cyw - p.nx * syw;
+                    const ny = p.ny * cp - nz1 * sp;
+                    const nz = p.ny * sp + nz1 * cp;
+                    const dif = Math.max(0, nx * LX + ny * LY + nz * LZ);
+                    let h = Math.max(0, nx * HX + ny * HY + nz * HZ);
+                    h *= h; h *= h; h *= h; h *= h;
+                    const borde = 1 - Math.abs(nz);
+                    const frente = nz > 0 ? 1 : 0.3;
+                    luz = (0.22 + 0.7 * dif) * frente + 0.6 * borde * borde * borde;
+                    brilloEsp = h * frente;
+                }
+
+                // Mientras se forma: viaja desde la galaxia hasta su sitio
+                if (!formado) {
+                    let k = formacion - p.retraso;
+                    k = k < 0 ? 0 : k > 1 ? 1 : k;
+                    if (k < 1) {
+                        const e = suavizar(k);
+                        const ang = p.ga + T * p.gw;
+                        const r = p.gr * escalaGalaxia;
+                        const gx0 = r * Math.cos(ang), gz0 = r * Math.sin(ang), gy0 = p.gh;
+                        const gy1 = gy0 * COS_I - gz0 * SIN_I;
+                        const gz = gy0 * SIN_I + gz0 * COS_I;
+                        const gx = gx0 * COS_G - gy1 * SIN_G;
+                        const gy = gx0 * SIN_G + gy1 * COS_G;
+                        vx = gx + (vx - gx) * e;
+                        vy = gy + (vy - gy) * e + Math.sin(e * Math.PI) * p.arco;
+                        vz = gz + (vz - gz) * e;
+                        luz = 0.5 + (luz - 0.5) * e;
+                        brilloEsp *= e;
+                    }
+                }
+
+                const persp = D / (D - vz);
+                const sx = CX + vx * R * persp;
+                const sy = CY - vy * R * persp;
+                p.px = sx;
+                p.py = sy;
+
+                const a = luz * p.alfa * (0.8 + 0.2 * osc) * brillo;
+                if (a < 0.012) continue;
+
+                const t = p.tam * tamBase * persp;
+                ctx.globalAlpha = a > 1 ? 1 : a;
+                ctx.drawImage(p.sprite, sx - t, sy - t, t * 2, t * 2);
+
+                if (brilloEsp > 0.06) {
+                    ctx.globalAlpha = Math.min(1, brilloEsp * 0.8);
+                    ctx.drawImage(SP.blanco, sx - t * 1.3, sy - t * 1.3, t * 2.6, t * 2.6);
+                }
+            }
+        }
+
+        // Traza el contorno del corazón (girado igual que el corazón)
+        function trazarContorno(s) {
+            const cyw = Math.cos(yaw), syw = Math.sin(yaw);
+            const cp = Math.cos(pitch), sp = Math.sin(pitch);
+            ctx.beginPath();
+            for (let j = 0; j < anillo.length; j++) {
+                const q = anillo[j];
+                const x = q.x * s, y = q.y * s;
+                const vx = x * cyw;
+                const z1 = -x * syw;
+                const vy = y * cp - z1 * sp;
+                const vz = y * sp + z1 * cp;
+                const persp = D / (D - vz);
+                const sx = CX + vx * R * persp;
+                const sy = CY - vy * R * persp;
+                if (j === 0) ctx.moveTo(sx, sy);
+                else ctx.lineTo(sx, sy);
+            }
+            ctx.closePath();
+        }
+
+        // Cuerpo translúcido: da volumen y calidez al corazón
+        function dibujarCuerpo(escala) {
+            const cuerpo = Math.min(1, Math.max(0, (formacion - 0.8) / 0.9));
+            if (cuerpo <= 0) return;
+            ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+            ctx.globalCompositeOperation = 'lighter';
+            ctx.globalAlpha = cuerpo * (1 + 0.35 * latido + 0.3 * brilloToque);
+            const lx = CX + (LUZ[0] * 0.55 + Math.sin(yaw) * 0.3) * R;
+            const ly = CY - LUZ[1] * 0.55 * R;
+            const g = ctx.createRadialGradient(lx, ly, 0, CX, CY, R * 1.25);
+            g.addColorStop(0, 'rgba(255,226,195,0.34)');
+            g.addColorStop(0.45, 'rgba(215,135,95,0.15)');
+            g.addColorStop(1, 'rgba(150,50,65,0.09)');
+            ctx.fillStyle = g;
+            trazarContorno(escala);
+            ctx.fill();
+        }
+
+        function dibujarOndas(dt, escala) {
+            if (!ondas.length) return;
+
+            ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+            ctx.globalCompositeOperation = 'lighter';
+            ctx.lineWidth = 1.3;
+            ctx.strokeStyle = 'rgb(242,200,130)';
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = 'rgba(205,155,75,0.9)';
+
+            for (let i = ondas.length - 1; i >= 0; i--) {
+                const o = ondas[i];
+                o.t += dt / 1.8;
+                if (o.t >= 1) {
+                    ondas.splice(i, 1);
+                    continue;
+                }
+                const s = escala * (1.02 + o.t * 0.6);
+                ctx.globalAlpha = Math.min(1, Math.pow(1 - o.t, 2) * 0.45 * o.fuerza);
+                trazarContorno(s);
+                ctx.stroke();
+            }
+            ctx.shadowBlur = 0;
+        }
+
+        function dibujarChispas(dt) {
+            ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+            ctx.globalCompositeOperation = 'lighter';
+            for (let i = chispas.length - 1; i >= 0; i--) {
+                const c = chispas[i];
+                c.t += dt;
+                if (c.t >= c.vida) {
+                    chispas[i] = chispas[chispas.length - 1];
+                    chispas.pop();
+                    continue;
+                }
+                c.x += c.vx * dt;
+                c.y += c.vy * dt;
+                c.vy -= 6 * dt;
+                const q = c.t / c.vida;
+                ctx.globalAlpha = Math.pow(1 - q, 1.5) * 0.85;
+                const t = c.tam;
+                ctx.drawImage(c.sp, c.x - t, c.y - t, t * 2, t * 2);
+            }
+        }
+
+        function dibujarCorazonesToque(dt) {
+            ctx.globalCompositeOperation = 'source-over';
+            const amort = Math.exp(-dt * 2.2);
+            for (let i = corazonesToque.length - 1; i >= 0; i--) {
+                const c = corazonesToque[i];
+                c.t += dt;
+                if (c.t >= c.vida) {
+                    corazonesToque[i] = corazonesToque[corazonesToque.length - 1];
+                    corazonesToque.pop();
+                    continue;
+                }
+                c.vx *= amort;
+                c.vy = c.vy * amort - 30 * dt;
+                c.x += c.vx * dt;
+                c.y += c.vy * dt;
+                c.rot += c.vr * dt;
+                const q = c.t / c.vida;
+                const s = c.s * Math.min(1, 0.4 + q * 6);
+                dibujarSprite(c.sp, c.x, c.y, s, c.rot, Math.pow(1 - q, 1.2));
+            }
+            ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        }
+
+        /* ---------- Latido ---------- */
+
+        function alLatir(fuerza = 1) {
+            if (!reducirMovimiento) ondas.push({ t: 0, fuerza });
+
+            const n = Math.round((reducirMovimiento ? 4 : esMovil ? 10 : 18) * fuerza);
+            const escalaV = R / 160;
+            for (let i = 0; i < n; i++) {
+                const p = puntos[(Math.random() * puntos.length) | 0];
+                if (p.interior) continue;
+                const dx = p.px - CX, dy = p.py - CY;
+                const l = Math.hypot(dx, dy) || 1;
+                const v = (18 + Math.random() * 40) * escalaV;
+                chispas.push({
+                    x: p.px,
+                    y: p.py,
+                    vx: (dx / l) * v,
+                    vy: (dy / l) * v - 8,
+                    t: 0,
+                    vida: 1.4 + Math.random() * 1.4,
+                    tam: (1.2 + Math.random() * 1.8) * escalaV * 2,
+                    sp: Math.random() < 0.5 ? SP.oroClaro : SP.crema
+                });
+            }
+        }
+
+        function animar(ahora) {
+            const dt = Math.min(0.05, (ahora - ultimo) / 1000);
+            ultimo = ahora;
+            T += dt;
+
+            // Formación del corazón
+            if (abierto && !formado) {
+                // Con reloj real, para que dure lo mismo aunque el móvil vaya lento
+                formacion = (ahora - momentoApertura) / 1000 / (reducirMovimiento ? 0.9 : 1.9);
+                if (formacion >= 1.9) {
+                    formacion = 1.9;
+                    formado = true;
+                }
+            }
+            const vida = abierto ? Math.min(1, Math.max(0, (formacion - 0.9) / 0.7)) : 0;
+
+            // Latido "lub-dub": se acelera cuando lo tocas y luego se calma
+            extraBpm *= Math.exp(-dt / 3.2);
+            brilloToque *= Math.exp(-dt / 1.2);
+            const bpm = BPM_BASE + extraBpm;
+            const faseAnterior = fase;
+            fase += dt * bpm / 60;
+            const p = fase % 1;
+            latido = (envolvente(p, 0.055) + 0.6 * envolvente(p - 0.3, 0.05)) * vida;
+            if (Math.floor(fase) !== Math.floor(faseAnterior) && vida > 0.5) alLatir();
+
+            const escala = 1 + 0.075 * latido * (reducirMovimiento ? 0.5 : 1);
+
+            // Giro suave + sigue al dedo / ratón
+            const k = 1 - Math.exp(-dt * 2.5);
+            parX += (objX - parX) * k;
+            parY += (objY - parY) * k;
+            const vel = reducirMovimiento ? 0.4 : 1;
+            yaw = Math.sin(T * 0.32 * vel) * 0.5 + parX * 0.55;
+            pitch = 0.1 + Math.sin(T * 0.21 * vel) * 0.07 + parY * 0.3;
+
+            dibujarFondo();
+            dibujarFlotantes(dt);
+            dibujarCuerpo(escala);
+            dibujarCorazon(escala);
+            dibujarOndas(dt, escala);
+            dibujarChispas(dt);
+            dibujarCorazonesToque(dt);
+
+            if (NOMBRE) {
+                nombreEl.style.transform = `translate(-50%, -50%) scale(${1 + 0.035 * latido})`;
+            }
+
+            requestAnimationFrame(animar);
         }
 
         setup();
-        initParticles();
-        animate();
+        construirCorazon();
+        const numFlotantes = reducirMovimiento ? 6 : esMovil ? 10 : 18;
+        for (let i = 0; i < numFlotantes; i++) flotantes.push(crearFlotante(true));
+        requestAnimationFrame(animar);
 
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                setup();
-                initParticles();
-            }, 150);
+            resizeTimeout = setTimeout(setup, 150);
         });
 
-        /* ============================
-           AUDIO
-        ============================ */
-        const miAudio = document.getElementById('miAudio');
-        const toggleAudio = document.getElementById('toggleAudio');
-        let audioIniciado = false;
+        /* =========================================
+           INTERACCIÓN
+        ========================================= */
 
-        function iniciarAudioPrimeraVez() {
-            if (audioIniciado) return;
-            audioIniciado = true;
+        let pistaUsada = false;
+        let ultimoMensaje = -10;
+        let indiceMensaje = 0;
 
-            miAudio.volume = 0.6;
-            miAudio.play().then(() => {
-                toggleAudio.textContent = '🖤';
-            }).catch(() => {
-                toggleAudio.textContent = '🤍';
-            });
+        window.addEventListener('pointermove', (e) => {
+            if (e.pointerType === 'mouse' || e.buttons > 0) {
+                objX = (e.clientX / W - 0.5) * 2;
+                objY = (e.clientY / H - 0.5) * 2;
+            }
+        });
 
-            document.removeEventListener('click', iniciarAudioPrimeraVez);
-            document.removeEventListener('touchstart', iniciarAudioPrimeraVez);
+        function soltar(e) {
+            if (e.pointerType !== 'mouse') {
+                objX = 0;
+                objY = 0;
+            }
+        }
+        window.addEventListener('pointerup', soltar);
+        window.addEventListener('pointercancel', soltar);
+        document.addEventListener('mouseleave', () => {
+            objX = 0;
+            objY = 0;
+        });
+
+        function estallido(x, y, n, fuerte) {
+            if (corazonesToque.length > 220) return;
+            for (let i = 0; i < n; i++) {
+                const ang = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI * (fuerte ? 2 : 1.3);
+                const v = (fuerte ? 90 : 60) + Math.random() * 110;
+                corazonesToque.push({
+                    x, y,
+                    vx: Math.cos(ang) * v,
+                    vy: Math.sin(ang) * v,
+                    t: 0,
+                    vida: 1.3 + Math.random() * 1.1,
+                    s: 14 + Math.random() * 18,
+                    rot: (Math.random() - 0.5) * 0.6,
+                    vr: (Math.random() - 0.5) * 1.5,
+                    sp: SPC[Math.floor(Math.random() * SPC.length)]
+                });
+            }
         }
 
-        document.addEventListener('click', iniciarAudioPrimeraVez);
-        document.addEventListener('touchstart', iniciarAudioPrimeraVez);
+        function mostrarMensaje(x, y) {
+            if (T - ultimoMensaje < 0.9) return;
+            ultimoMensaje = T;
+            const el = document.createElement('div');
+            el.className = 'mensaje-flotante';
+            el.textContent = MENSAJES_TOQUE[indiceMensaje++ % MENSAJES_TOQUE.length];
+            el.style.left = Math.min(W - 110, Math.max(110, x)) + 'px';
+            el.style.top = (y - 20) + 'px';
+            document.body.appendChild(el);
+            el.addEventListener('animationend', () => el.remove());
+            setTimeout(() => el.remove(), 4000);
+        }
+
+        window.addEventListener('pointerdown', (e) => {
+            if (!abierto || e.target.closest('button, .intro')) return;
+
+            const x = e.clientX, y = e.clientY;
+            const dx = (x - CX) / R, dy = (y - CY) / R;
+            const enCorazon = dx * dx + dy * dy < 1.3;
+
+            if (enCorazon && formacion > 1) {
+                // Se le acelera el corazón
+                extraBpm = Math.min(extraBpm + 26, 70);
+                brilloToque = 1;
+                alLatir(1.4);
+                estallido(x, y, reducirMovimiento ? 5 : 14, true);
+                mostrarMensaje(x, y);
+                if (!pistaUsada) {
+                    pistaUsada = true;
+                    pistaEl.classList.remove('visible');
+                }
+            } else {
+                estallido(x, y, reducirMovimiento ? 4 : 9, false);
+            }
+        });
+
+        /* ---------- Frases ---------- */
+
+        let indiceFrase = -1;
+
+        function siguienteFrase() {
+            fraseEl.classList.remove('visible');
+            setTimeout(() => {
+                indiceFrase = (indiceFrase + 1) % FRASES.length;
+                fraseEl.textContent = FRASES[indiceFrase];
+                fraseEl.classList.add('visible');
+            }, 1300);
+        }
+
+        /* =========================================
+           AUDIO
+        ========================================= */
+        const miAudio = document.getElementById('miAudio');
+        const toggleAudio = document.getElementById('toggleAudio');
+
+        function fundirVolumen(destino, ms) {
+            const inicio = miAudio.volume;
+            const t0 = performance.now();
+
+            function paso(ahora) {
+                const q = Math.min(1, (ahora - t0) / ms);
+                miAudio.volume = inicio + (destino - inicio) * q;
+                if (q < 1) requestAnimationFrame(paso);
+            }
+            requestAnimationFrame(paso);
+        }
+
+        function iniciarAudio() {
+            miAudio.volume = 0;
+            const intento = miAudio.play();
+            if (intento && intento.then) {
+                intento.then(() => {
+                    toggleAudio.textContent = '🖤';
+                    fundirVolumen(0.6, 3500);
+                }).catch(() => {
+                    toggleAudio.textContent = '🤍';
+                });
+            }
+        }
 
         toggleAudio.addEventListener('click', (e) => {
             e.stopPropagation();
 
             if (miAudio.paused) {
-                miAudio.play();
-                toggleAudio.textContent = '🖤';
+                miAudio.volume = 0.6;
+                miAudio.play().then(() => {
+                    toggleAudio.textContent = '🖤';
+                }).catch(() => { });
             } else {
                 miAudio.pause();
                 toggleAudio.textContent = '🤍';
             }
         });
+
+        /* =========================================
+           ABRIR LA SORPRESA
+        ========================================= */
+        const intro = document.getElementById('intro');
+
+        function abrir() {
+            if (abierto) return;
+            abierto = true;
+            momentoApertura = performance.now();
+            document.body.classList.add('abierto');
+            intro.classList.add('oculto');
+            iniciarAudio();
+
+            setTimeout(() => {
+                siguienteFrase();
+                setInterval(siguienteFrase, 7500);
+            }, 4200);
+
+            setTimeout(() => {
+                if (!pistaUsada) pistaEl.classList.add('visible');
+            }, 11000);
+        }
+
+        intro.addEventListener('click', abrir);
     </script>
 
 </body>
